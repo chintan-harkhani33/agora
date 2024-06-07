@@ -1,6 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { RtcTokenBuilder, RtcRole } from 'agora-token';
+import { log } from 'console';
 // import { AxiosResponse } from 'axios';
 import { firstValueFrom } from 'rxjs';
 @Injectable()
@@ -12,11 +13,16 @@ export class AgoraapiService {
     let max = 4294967295; 
     let uid = Math.floor(Math.random() * (max - 1 + 1)) + 1;
     const ExpireTime = parseInt(process.env.TOKEN_EXPIRE_TIME, 10);
-    console.log(ExpireTime);
+    console.log({ExpireTime});
 
     const CurrentTIme = Math.floor(Date.now() / 1000);
     const PriExpireTime = CurrentTIme + ExpireTime;
-    console.log(PriExpireTime);
+    console.log({PriExpireTime});
+
+    console.log("process.env.AGORA_APPID", process.env.AGORA_APPID)
+    console.log("process.env.AGORA_APP_CERTIFICATE", process.env.AGORA_APP_CERTIFICATE)
+
+
     let privilege_expire = 3600;
     const Token = RtcTokenBuilder.buildTokenWithUid(
       process.env.AGORA_APPID,
@@ -27,6 +33,7 @@ export class AgoraapiService {
       PriExpireTime,
       privilege_expire,
     );
+console.log("Token", Token);
 
       return {
         data: {
